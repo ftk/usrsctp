@@ -151,7 +151,7 @@ if (INET6)
 	add_definitions(-DINET6)
 endif()
 
-option(THREAD_SUPPORT "Support threads " 1)
+option(THREAD_SUPPORT "Support threads " 0)
 if (THREAD_SUPPORT)
 	add_definitions(-DTHREAD_SUPPORT)
 endif()
