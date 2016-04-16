@@ -526,6 +526,18 @@ struct sctp_event_subscribe {
 #define SCTP_PLUGGABLE_SS               0x00001203
 #define SCTP_SS_VALUE                   0x00001204
 
+/* ancillary data types */
+#define SCTP_INIT       0x0001
+#define SCTP_SNDRCV     0x0002
+#define SCTP_EXTRCV     0x0003
+#define SCTP_SNDINFO    0x0004
+#define SCTP_RCVINFO    0x0005
+#define SCTP_NXTINFO    0x0006
+#define SCTP_PRINFO     0x0007
+#define SCTP_AUTHINFO   0x0008
+#define SCTP_DSTADDRV4  0x0009
+#define SCTP_DSTADDRV6  0x000a
+
 /*
  * read-only options
  */
@@ -979,6 +991,41 @@ usrsctp_deregister_address(void *);
 
 int
 usrsctp_set_ulpinfo(struct socket *, void *);
+
+int
+usrsctp_set_upcall(struct socket *so,
+                   void (*upcall)(struct socket *, void *, int),
+                   void *arg);
+
+int
+usrsctp_get_events(struct socket *so);
+
+void
+usrsctp_handle_timers(int);
+
+int
+usrsctp_open_sctp4_socket(void);
+
+int
+usrsctp_open_udpsctp4_socket(void);
+
+int
+usrsctp_open_sctp6_socket(void);
+
+int
+usrsctp_open_udpsctp6_socket(void);
+
+void
+usrsctp_recv_function_sctp4(void);
+
+void
+usrsctp_recv_function_udpsctp4(void);
+
+void
+usrsctp_recv_function_sctp6(void);
+
+void
+usrsctp_recv_function_udpsctp6(void);
 
 #define SCTP_DUMP_OUTBOUND 1
 #define SCTP_DUMP_INBOUND  0
