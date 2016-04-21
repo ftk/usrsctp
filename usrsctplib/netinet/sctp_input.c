@@ -6024,7 +6024,7 @@ sctp_common_input_processing(struct mbuf **mm, int iphlen, int offset, int lengt
 
 	}
 #if defined(__Userspace__)
-	if (stcb) {
+	if (stcb && !(stcb->sctp_ep->sctp_flags & SCTP_PCB_FLAGS_SOCKET_GONE)) {
 		if (stcb->sctp_socket != NULL) {
 			if (stcb->sctp_socket->so_head != NULL) {
 				upcall_socket = stcb->sctp_socket->so_head;
@@ -6115,7 +6115,20 @@ sctp_common_input_processing(struct mbuf **mm, int iphlen, int offset, int lengt
 		 */
 		goto out;
 	}
-
+#if defined(__Userspace__)
+	if (stcb && upcall_socket == NULL && !(stcb->sctp_ep->sctp_flags & SCTP_PCB_FLAGS_SOCKET_GONE)) {
+		if (stcb->sctp_socket != NULL) {
+			if (stcb->sctp_socket->so_head != NULL) {
+				upcall_socket = stcb->sctp_socket->so_head;
+			} else {
+				upcall_socket = stcb->sctp_socket;
+			}
+			SOCK_LOCK(upcall_socket);
+			soref(upcall_socket);
+			SOCK_UNLOCK(upcall_socket);
+		}
+	}
+#endif
 	/*
 	 * DATA chunk processing
 	 */
