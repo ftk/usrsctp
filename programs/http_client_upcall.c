@@ -77,7 +77,6 @@ static void handle_upcall(struct socket *sock, void *arg, int flags)
 	char *buf;
 
 	if ((events & SCTP_EVENT_WRITE) && writePending) {
-		printf("socket is writable\n");
 		printf("\nHTTP request:\n%s\n", request);
 		printf("\nHTTP response:\n");
 
@@ -100,14 +99,12 @@ static void handle_upcall(struct socket *sock, void *arg, int flags)
 		socklen_t len = (socklen_t)sizeof(struct sockaddr_in);
 		unsigned int infotype = 0;
 		socklen_t infolen = sizeof(struct sctp_recvv_rn);
-		printf("socket is readable\n");
 		memset(&rn, 0, sizeof(struct sctp_recvv_rn));
 		n = usrsctp_recvv(sock, buf, BUFFERSIZE, (struct sockaddr *) &addr, &len, (void *)&rn,
 	                 &infolen, &infotype, &flags);
 		if (n > 0)
-			printf("Message received: %s\n", buf);
+			write(1, buf, n);
 		done = 1;
-printf("set done=1\n");
 		usrsctp_close(sock);
 		free(buf);
 		return;
@@ -198,7 +195,7 @@ main(int argc, char *argv[])
 		snprintf(request, sizeof(request), "%s %s %s", request_prefix, "/", request_postfix);
 #endif
 	}
-
+	usrsctp_set_upcall(sock, handle_upcall, NULL);
 	memset((void *)&addr4, 0, sizeof(struct sockaddr_in));
 	memset((void *)&addr6, 0, sizeof(struct sockaddr_in6));
 #ifdef HAVE_SIN_LEN
@@ -231,8 +228,6 @@ main(int argc, char *argv[])
 		result = 6;
 		goto out;
 	}
-
-	usrsctp_set_upcall(sock, handle_upcall, NULL);
 
 	while (!done) {
 #ifdef _WIN32
