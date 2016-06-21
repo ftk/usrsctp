@@ -163,6 +163,7 @@ SET (check_PROGRAMS
 	rtcweb.c
 	test_libmgmt.c
 	tsctp.c
+	http_client_upcall.c
 )
 
 # SETTINGS FOR UNIX COMPILER
