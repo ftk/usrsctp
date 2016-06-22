@@ -77,6 +77,8 @@ static void handle_upcall(struct socket *sock, void *arg, int flags)
 	char *buf;
 
 	if ((events & SCTP_EVENT_WRITE) && writePending) {
+		writePending = 0;
+	printf("writable\n");
 		printf("\nHTTP request:\n%s\n", request);
 		printf("\nHTTP response:\n");
 
@@ -85,9 +87,9 @@ static void handle_upcall(struct socket *sock, void *arg, int flags)
 		if (bytesSent < 0) {
 			perror("usrsctp_sendv");
 			usrsctp_close(sock);
+		} else {
+			printf("%d bytes sent\n", bytesSent);
 		}
-		printf("%d bytes sent\n", bytesSent);
-		writePending = 0;
 	}
 
 	if ((events & SCTP_EVENT_READ) && !done) {
@@ -98,6 +100,7 @@ static void handle_upcall(struct socket *sock, void *arg, int flags)
 		int flags = 0;
 		socklen_t len = (socklen_t)sizeof(struct sockaddr_in);
 		unsigned int infotype = 0;
+		printf("readable\n");
 		socklen_t infolen = sizeof(struct sctp_recvv_rn);
 		memset(&rn, 0, sizeof(struct sctp_recvv_rn));
 		n = usrsctp_recvv(sock, buf, BUFFERSIZE, (struct sockaddr *) &addr, &len, (void *)&rn,
@@ -143,7 +146,7 @@ main(int argc, char *argv[])
 	}
 
 #ifdef SCTP_DEBUG
-	usrsctp_sysctl_set_sctp_debug_on(SCTP_DEBUG_ALL);
+	//usrsctp_sysctl_set_sctp_debug_on(SCTP_DEBUG_ALL);
 #endif
 
 	usrsctp_sysctl_set_sctp_blackhole(2);
@@ -153,6 +156,8 @@ main(int argc, char *argv[])
 		result = 1;
 		goto out;
 	}
+
+	usrsctp_set_non_blocking(sock, 1);
 
 	if (argc > 3) {
 		memset((void *)&addr6, 0, sizeof(struct sockaddr_in6));
@@ -195,7 +200,9 @@ main(int argc, char *argv[])
 		snprintf(request, sizeof(request), "%s %s %s", request_prefix, "/", request_postfix);
 #endif
 	}
+
 	usrsctp_set_upcall(sock, handle_upcall, NULL);
+
 	memset((void *)&addr4, 0, sizeof(struct sockaddr_in));
 	memset((void *)&addr6, 0, sizeof(struct sockaddr_in6));
 #ifdef HAVE_SIN_LEN
@@ -208,19 +215,24 @@ main(int argc, char *argv[])
 	addr6.sin6_family = AF_INET6;
 	addr4.sin_port = htons(atoi(argv[2]));
 	addr6.sin6_port = htons(atoi(argv[2]));
+	printf("vor connect\n");
 	if (inet_pton(AF_INET6, argv[1], &addr6.sin6_addr) == 1) {
 		if (usrsctp_connect(sock, (struct sockaddr *)&addr6, sizeof(struct sockaddr_in6)) < 0) {
-			perror("usrsctp_connect");
-			usrsctp_close(sock);
-			result = 4;
-			goto out;
+			if (errno != EINPROGRESS) {
+				perror("usrsctp_connect");
+				usrsctp_close(sock);
+				result = 4;
+				goto out;
+			}
 		}
 	} else if (inet_pton(AF_INET, argv[1], &addr4.sin_addr) == 1) {
 		if (usrsctp_connect(sock, (struct sockaddr *)&addr4, sizeof(struct sockaddr_in)) < 0) {
-			perror("usrsctp_connect");
-			usrsctp_close(sock);
-			result = 5;
-			goto out;
+			if (errno != EINPROGRESS) {
+				perror("usrsctp_connect");
+				usrsctp_close(sock);
+				result = 5;
+				goto out;
+			}
 		}
 	} else {
 		printf("Illegal destination address\n");
@@ -228,7 +240,7 @@ main(int argc, char *argv[])
 		result = 6;
 		goto out;
 	}
-
+printf("nach connect\n");
 	while (!done) {
 #ifdef _WIN32
 		Sleep(1*1000);
