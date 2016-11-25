@@ -131,7 +131,7 @@ find_package(Threads)
 # PROGRAMS
 #################################################
 
-SET (check_PROGRAMS
+SET (CHECK_PROGRAMS
 	client.c
 	datachan_serv.c
 	daytime_server.c
