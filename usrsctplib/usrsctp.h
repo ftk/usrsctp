@@ -122,6 +122,10 @@ union sctp_sockstore {
 #define SCTP_CURRENT_ASSOC 1
 #define SCTP_ALL_ASSOC     2
 
+#define SCTP_EVENT_READ    0x0001
+#define SCTP_EVENT_WRITE   0x0002
+#define SCTP_EVENT_ERROR   0x0004
+
 /***  Structures and definitions to use the socket API  ***/
 
 #define SCTP_ALIGN_RESV_PAD 92

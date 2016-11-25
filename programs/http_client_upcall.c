@@ -63,10 +63,6 @@ char request[512];
 typedef char* caddr_t;
 #endif
 
-#define SCTP_EVENT_READ    0x0001
-#define SCTP_EVENT_WRITE   0x0002
-#define SCTP_EVENT_ERROR   0x0004
-
 #define BUFFERSIZE                 (1<<16)
 
 
