@@ -183,5 +183,9 @@ foreach (SOURCE_FILE ${CHECK_PROGRAMS})
         ${CMAKE_THREAD_LIBS_INIT}
     )
 
+    install(TARGETS ${SOURCE_FILE_WE}
+            RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}/libusrsctp
+            BUNDLE DESTINATION  ${CMAKE_INSTALL_LIBDIR}/libusrsctp)
+
     add_test(${SOURCE_FILE_WE} ${SOURCE_FILE_WE})
 endforeach ()
