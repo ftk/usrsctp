@@ -8,6 +8,7 @@ usr/lib/libusrsctp/ekr_loop
 usr/lib/libusrsctp/ekr_peer
 usr/lib/libusrsctp/ekr_server
 usr/lib/libusrsctp/http_client
+usr/lib/libusrsctp/http_client_upcall
 usr/lib/libusrsctp/rtcweb
 usr/lib/libusrsctp/test_libmgmt
 usr/lib/libusrsctp/tsctp

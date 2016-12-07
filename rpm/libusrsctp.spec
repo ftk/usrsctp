@@ -71,6 +71,7 @@ make install DESTDIR=%{buildroot}
 /usr/lib/libusrsctp/rtcweb
 /usr/lib/libusrsctp/test_libmgmt
 /usr/lib/libusrsctp/tsctp
+/usr/lib/libusrsctp/http_client_upcall
 
 %changelog
 * Fri Dec 02 2016 Thomas Dreibholz <dreibh@simula.no> 1.0.0
