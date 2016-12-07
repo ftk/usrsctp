@@ -100,7 +100,7 @@ static void handle_upcall(struct socket *sock, void *arg, int flags)
 		n = usrsctp_recvv(sock, buf, BUFFERSIZE, (struct sockaddr *) &addr, &len, (void *)&rn,
 	                 &infolen, &infotype, &flags);
 		if (n > 0)
-			write(1, buf, n);
+			n = write(1, buf, n);
 		done = 1;
 		usrsctp_close(sock);
 		free(buf);
