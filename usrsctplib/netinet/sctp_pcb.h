@@ -322,10 +322,13 @@ struct sctp_base_info {
 #if defined(__Userspace_os_Windows)
 	SOCKET userspace_rawsctp;
 	SOCKET userspace_udpsctp;
+	SOCKET userspace_icmp;
 #else
 	int userspace_rawsctp;
 	int userspace_udpsctp;
+	int userspace_icmp;
 #endif
+	userland_thread_t recvthreadicmp;
 	userland_thread_t recvthreadraw;
 	userland_thread_t recvthreadudp;
 #if !defined(THREAD_SUPPORT)
@@ -337,16 +340,24 @@ struct sctp_base_info {
 	int udp_to_fill4;
 	struct mbuf **udp_recvmbuf6;
 	int udp_to_fill6;
+	struct mbuf **icmp_recvmbuf4;
+	int icmp_to_fill4;
+	struct mbuf **icmp_recvmbuf6;
+	int icmp_to_fill6;
 #if !defined(__Userspace_os_Windows)
 	struct iovec recv_iovec4[MAXLEN_MBUF_CHAIN];
 	struct iovec recv_iovec6[MAXLEN_MBUF_CHAIN];
 	struct iovec udp_recv_iovec4[MAXLEN_MBUF_CHAIN];
 	struct iovec udp_recv_iovec6[MAXLEN_MBUF_CHAIN];
+	struct iovec icmp_recv_iovec4[MAXLEN_MBUF_CHAIN];
+	struct iovec icmp_recv_iovec6[MAXLEN_MBUF_CHAIN];
 #else
     WSABUF *rcv_iovec4;
     WSABUF *rcv_iovec6;
     WSABUF *udp_rcv_iovec4;
     WSABUF *udp_rcv_iovec6;
+    WSABUF *icmp_rcv_iovec4;
+    WSABUF *icmp_rcv_iovec6;
 #endif
 #endif
 #endif
@@ -354,12 +365,15 @@ struct sctp_base_info {
 #if defined(__Userspace_os_Windows)
 	SOCKET userspace_rawsctp6;
 	SOCKET userspace_udpsctp6;
+	SOCKET userspace_icmp6;
 #else
 	int userspace_rawsctp6;
 	int userspace_udpsctp6;
+	int userspace_icmp6;
 #endif
 	userland_thread_t recvthreadraw6;
 	userland_thread_t recvthreadudp6;
+	userland_thread_t recvthreadicmp6;
 #endif
 	int (*conn_output)(void *addr, void *buffer, size_t length, uint8_t tos, uint8_t set_df);
 	void (*debug_printf)(const char *format, ...);

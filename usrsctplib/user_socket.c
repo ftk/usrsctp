@@ -3384,6 +3384,13 @@ usrsctp_get_events(struct socket *so)
 	return events;
 }
 
+int usrsctp_get_error(struct socket *so)
+{
+    if (so->so_error)
+        return so->so_error;
+    return -1;
+}
+
 int
 usrsctp_set_upcall(struct socket *so, void (*upcall)(struct socket *, void *, int), void *arg)
 {

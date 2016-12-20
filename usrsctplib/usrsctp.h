@@ -1006,14 +1006,23 @@ usrsctp_set_upcall(struct socket *so,
 int
 usrsctp_get_events(struct socket *so);
 
+int
+usrsctp_get_error(struct socket *so);
+
 void
 usrsctp_handle_timers(int);
+
+int
+usrsctp_open_icmp_socket(void);
 
 int
 usrsctp_open_sctp4_socket(void);
 
 int
 usrsctp_open_udpsctp4_socket(void);
+
+int
+usrsctp_open_icmp6_socket(void);
 
 int
 usrsctp_open_sctp6_socket(void);
@@ -1032,6 +1041,12 @@ usrsctp_recv_function_sctp6(void);
 
 void
 usrsctp_recv_function_udpsctp6(void);
+
+void
+usrsctp_recv_function_icmp(void);
+
+void
+usrsctp_recv_function_icmp6(void);
 
 #define SCTP_DUMP_OUTBOUND 1
 #define SCTP_DUMP_INBOUND  0
