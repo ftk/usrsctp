@@ -38,6 +38,20 @@ __FBSDID("$FreeBSD: head/sys/netinet6/sctp6_var.h 298132 2016-04-16 21:34:49Z tu
 #ifndef _NETINET6_SCTP6_VAR_H_
 #define _NETINET6_SCTP6_VAR_H_
 
+#if defined(__Userspace_os_Darwin)
+struct ip6ctlparam {
+	struct mbuf *ip6c_m;            /* start of mbuf chain */
+	struct icmp6_hdr *ip6c_icmp6;   /* icmp6 header of target packet */
+	struct ip6_hdr *ip6c_ip6;       /* ip6 header of target packet */
+	int ip6c_off;                   /* offset of the target proto header */
+	struct sockaddr_in6 *ip6c_src;  /* srcaddr w/ additional info */
+	struct sockaddr_in6 *ip6c_dst;  /* (final) dstaddr w/ additional info */
+	struct in6_addr *ip6c_finaldst; /* final destination address */
+	void *ip6c_cmdarg;              /* control command dependent data */
+	u_int8_t ip6c_nxt;              /* final next header field */
+};
+#endif
+
 #if defined(__Userspace__)
 #ifdef INET
 extern void in6_sin6_2_sin(struct sockaddr_in *, struct sockaddr_in6 *);

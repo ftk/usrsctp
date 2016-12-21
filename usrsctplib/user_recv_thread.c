@@ -312,6 +312,9 @@ recv_icmp(WSABUF *rcv_iovec, int len, struct mbuf **icmprecvmbuf)
 	struct ip *ip, *inner_ip;
 	struct icmp *icmp;
 	struct sockaddr_in icmpsrc;
+#if defined(__Userspace_os_Darwin)
+    int hlen;
+#endif
 
 #if defined(__Userspace_os_Windows)
 	flags = 0;
