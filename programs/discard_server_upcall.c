@@ -155,14 +155,6 @@ main(int argc, char *argv[])
 	unsigned int i;
 	struct sctp_assoc_value av;
 	const int on = 1;
-	ssize_t n;
-	int flags;
-	socklen_t from_len;
-	char buffer[BUFFERSIZE];
-	char name[INET6_ADDRSTRLEN];
-	socklen_t infolen;
-	struct sctp_rcvinfo rcv_info;
-	unsigned int infotype;
 
 	if (argc > 1) {
 		usrsctp_init(atoi(argv[1]), NULL, debug_printf);

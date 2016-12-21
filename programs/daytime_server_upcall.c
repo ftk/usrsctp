@@ -93,7 +93,7 @@ debug_printf(const char *format, ...)
 int
 main(int argc, char *argv[])
 {
-	struct socket *sock, *conn_sock;
+	struct socket *sock;
 	struct sockaddr_in addr;
 	struct sctp_udpencaps encaps;
 
