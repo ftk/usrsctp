@@ -146,6 +146,11 @@ SET (CHECK_PROGRAMS
 	test_libmgmt.c
 	tsctp.c
 	http_client_upcall.c
+	client_upcall.c
+	discard_server_upcall.c
+	echo_server_upcall.c
+	chargen_server_upcall.c
+	daytime_server_upcall.c
 )
 
 # SETTINGS FOR UNIX COMPILER
