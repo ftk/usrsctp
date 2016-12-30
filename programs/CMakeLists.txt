@@ -145,6 +145,7 @@ SET (CHECK_PROGRAMS
 	rtcweb.c
 	test_libmgmt.c
 	tsctp.c
+	test_timer.c
 	http_client_upcall.c
 	client_upcall.c
 	discard_server_upcall.c
