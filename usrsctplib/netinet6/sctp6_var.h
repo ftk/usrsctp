@@ -38,7 +38,7 @@ __FBSDID("$FreeBSD: head/sys/netinet6/sctp6_var.h 309607 2016-12-06 10:21:25Z tu
 #ifndef _NETINET6_SCTP6_VAR_H_
 #define _NETINET6_SCTP6_VAR_H_
 
-#if defined(__Userspace_os_Darwin)
+#if defined(__Userspace_os_Darwin) || defined(__Userspace_os_NetBSD)
 struct ip6ctlparam {
 	struct mbuf *ip6c_m;            /* start of mbuf chain */
 	struct icmp6_hdr *ip6c_icmp6;   /* icmp6 header of target packet */
