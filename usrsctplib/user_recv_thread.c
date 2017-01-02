@@ -389,7 +389,7 @@ recv_icmp(WSABUF *rcv_iovec, int len, struct mbuf **icmprecvmbuf)
 	    icmp->icmp_type == ICMP_TIMXCEED ||
 	    icmp->icmp_type == ICMP_PARAMPROB) {
 		int icmplen = ntohs(ip->ip_len) - sizeof(struct ip);
-		if (icmplen < ICMP_ADVLENMIN || icmplen < ICMP_ADVLEN(icmp) ||
+		if (icmplen < (int)ICMP_ADVLENMIN || icmplen < ICMP_ADVLEN(icmp) ||
 		    icmp->icmp_ip.ip_hl < (sizeof(struct ip) >> 2)) {
 			SCTPDBG(SCTP_DEBUG_USR,"Bad icmp packet length\n");
 			return 0;
@@ -405,7 +405,7 @@ recv_icmp(WSABUF *rcv_iovec, int len, struct mbuf **icmprecvmbuf)
 			sctp_ctlinput(icmp->icmp_code, (struct sockaddr *)&icmpsrc, (void *)inner_ip);
 		} else if (inner_ip->ip_p == IPPROTO_UDP) {
 			struct udphdr *udp = (struct udphdr *)(inner_ip + 1);
-			int port = ntohs(udp->uh_sport);
+			uint16_t port = ntohs(udp->uh_sport);
 			if (port == SCTP_BASE_SYSCTL(sctp_udp_tunneling_port)) {
 				sctp_recv_icmp_tunneled_packet(icmp->icmp_code, (struct sockaddr *)&icmpsrc, (void *)inner_ip, NULL);
 			}
@@ -842,7 +842,7 @@ recv_icmp6(WSABUF *recv_iovec, int len, struct mbuf **recvmbuf6)
 			sctp6_ctlinput(icmp6->icmp6_code, (struct sockaddr *)&icmpsrc, (void *)ip6cp);
 		} else if (inner_ip6->ip6_nxt == IPPROTO_UDP) {
 			struct udphdr *udp = (struct udphdr *)(ip6cp->ip6c_ip6 + 1);
-			int port = ntohs(udp->uh_sport);
+			uint16_t port = ntohs(udp->uh_sport);
 			if (port == SCTP_BASE_SYSCTL(sctp_udp_tunneling_port)) {
 				sctp_recv_icmp6_tunneled_packet(icmp6->icmp6_code, (struct sockaddr *)&icmpsrc, (void *)ip6cp, NULL);
 			}
