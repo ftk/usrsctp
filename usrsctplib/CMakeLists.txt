@@ -1,6 +1,6 @@
 #
 # Copyright (C) 2015-2015 Oleg Alexeenkov
-# Copyright (C) 2015-2015 Felix Weinrank
+# Copyright (C) 2015-2017 Felix Weinrank
 #
 # All rights reserved.
 #
@@ -51,6 +51,7 @@ set(exec_prefix "\${prefix}")
 set(libdir "\${exec_prefix}/lib")
 set(includedir "\${prefix}/include/usrsctp")
 set(CMAKE_REQUIRED_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR})
+set(CMAKE_MACOSX_RPATH 1)
 
 
 #################################################
@@ -131,6 +132,8 @@ endif ()
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     add_definitions(-U__APPLE__)
     add_definitions(-D__APPLE_USE_RFC_2292)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-deprecated-declarations")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
 endif ()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "DragonFly")
@@ -263,8 +266,8 @@ set_target_properties(usrsctp PROPERTIES SOVERSION 1 VERSION 1.0.0)
 
 # SETTINGS FOR UNIX COMPILER
 if ("x${CMAKE_C_COMPILER_ID}" STREQUAL "xClang" OR "x${CMAKE_C_COMPILER_ID}" STREQUAL "xGNU")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic -Wall -std=c99")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -std=c99")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic -Wextra -Wall -std=c99 -Wno-unused-parameter")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wextra -Wall -std=c99 -Wno-unused-parameter")
     if (WERROR)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")

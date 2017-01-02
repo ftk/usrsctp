@@ -152,6 +152,7 @@ SET (CHECK_PROGRAMS
 	echo_server_upcall.c
 	chargen_server_upcall.c
 	daytime_server_upcall.c
+	ekr_loop_offload.c
 )
 
 # SETTINGS FOR UNIX COMPILER
