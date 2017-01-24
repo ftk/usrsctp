@@ -50,6 +50,7 @@
 #include <usrsctp.h>
 
 #define DAYTIME_PPID 40
+#define PORT 13
 
 static void
 handle_accept(struct socket *sock, void *data, int flags)
@@ -124,7 +125,7 @@ main(int argc, char *argv[])
 	addr.sin_len = sizeof(struct sockaddr_in);
 #endif
 	addr.sin_family = AF_INET;
-	addr.sin_port = htons(13);
+	addr.sin_port = htons(PORT);
 	addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	if (usrsctp_bind(sock, (struct sockaddr *)&addr, sizeof(struct sockaddr_in)) < 0) {
 		perror("usrsctp_bind");

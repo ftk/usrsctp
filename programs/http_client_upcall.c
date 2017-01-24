@@ -29,7 +29,7 @@
  */
 
 /*
- * Usage: http_client remote_addr remote_port [local_port] [local_encaps_port] [remote_encaps_port] [uri]
+ * Usage: http_client_upcall remote_addr remote_port [local_port] [local_encaps_port] [remote_encaps_port] [uri]
  */
 
 #ifdef _WIN32
@@ -128,7 +128,7 @@ main(int argc, char *argv[])
 	int result;
 
     if (argc < 3) {
-        printf("Usage: http_client remote_addr remote_port [local_port] [local_encaps_port] [remote_encaps_port] [uri]\n");
+        printf("Usage: http_client_upcall remote_addr remote_port [local_port] [local_encaps_port] [remote_encaps_port] [uri]\n");
         return(EXIT_FAILURE);
     }
 
@@ -140,7 +140,7 @@ main(int argc, char *argv[])
 	}
 
 #ifdef SCTP_DEBUG
-	usrsctp_sysctl_set_sctp_debug_on(SCTP_DEBUG_NONE);
+	usrsctp_sysctl_set_sctp_debug_on(SCTP_DEBUG_ALL);
 #endif
 
 	usrsctp_sysctl_set_sctp_blackhole(2);

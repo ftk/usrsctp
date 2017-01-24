@@ -49,6 +49,7 @@
 #include <usrsctp.h>
 
 #define BUFFERSIZE 10240
+#define PORT 7
 
 static void
 handle_upcall(struct socket *sock, void *data, int flags)
@@ -57,10 +58,9 @@ handle_upcall(struct socket *sock, void *data, int flags)
 	const char *name;
 	uint16_t port;
 	char *buf;
+	int events;
 
-	int events = usrsctp_get_events(sock);
-
-	if (events & SCTP_EVENT_READ) {
+	while ((events = usrsctp_get_events(sock)) && (events & SCTP_EVENT_READ)) {
 		struct sctp_recvv_rn rn;
 		ssize_t n;
 		struct sockaddr_storage addr;
@@ -116,7 +116,7 @@ handle_upcall(struct socket *sock, void *data, int flags)
                     free(buf);
                     return;
                 }
-                
+
 				printf("Msg of length %d received from %s:%u on stream %d with SSN %u and TSN %u, PPID %u, context %u.\n",
 				       (int)n,
 				       namebuf,
@@ -227,7 +227,7 @@ main(int argc, char *argv[])
 	addr.sin6_len = sizeof(struct sockaddr_in6);
 #endif
 	addr.sin6_family = AF_INET6;
-	addr.sin6_port = htons(7);
+	addr.sin6_port = htons(PORT);
 	addr.sin6_addr = in6addr_any;
 	if (usrsctp_bind(sock, (struct sockaddr *)&addr, sizeof(struct sockaddr_in6)) < 0) {
 		perror("usrsctp_bind");

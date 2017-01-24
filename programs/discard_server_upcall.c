@@ -49,6 +49,7 @@
 #include <usrsctp.h>
 
 #define BUFFERSIZE 10240
+#define PORT 9
 
 
 static void
@@ -58,10 +59,9 @@ handle_upcall(struct socket *sock, void *data, int flags)
 	const char *name;
 	uint16_t port;
 	char *buf;
+	int events;
 
-	int events = usrsctp_get_events(sock);
-
-	if (events & SCTP_EVENT_READ) {
+	while ((events = usrsctp_get_events(sock)) && (events & SCTP_EVENT_READ)) {
 		struct sctp_recvv_rn rn;
 		ssize_t n;
 		struct sockaddr_storage addr;
@@ -215,7 +215,7 @@ main(int argc, char *argv[])
 	addr.sin6_len = sizeof(struct sockaddr_in6);
 #endif
 	addr.sin6_family = AF_INET6;
-	addr.sin6_port = htons(9);
+	addr.sin6_port = htons(PORT);
 	addr.sin6_addr = in6addr_any;
 	if (usrsctp_bind(sock, (struct sockaddr *)&addr, sizeof(struct sockaddr_in6)) < 0) {
 		perror("usrsctp_bind");

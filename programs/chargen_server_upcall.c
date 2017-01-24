@@ -51,6 +51,7 @@
 #include <usrsctp.h>
 
 #define BUFFERSIZE 10240
+#define PORT 19
 
 char buffer[95];
 int done = 0;
@@ -85,9 +86,11 @@ handle_accept(struct socket *sock, void *data, int flags)
 static void
 handle_upcall(struct socket *sock, void *data, int flags)
 {
-	int events = usrsctp_get_events(sock);
+//	int events = usrsctp_get_events(sock);
+	int events;
 
-	if (events & SCTP_EVENT_READ && !done) {
+	while ((events = usrsctp_get_events(sock)) && (events & SCTP_EVENT_READ) && !done) {
+	//if (events & SCTP_EVENT_READ && !done) {
 		char *buf;
 		struct sctp_recvv_rn rn;
 		ssize_t n;
@@ -110,7 +113,8 @@ handle_upcall(struct socket *sock, void *data, int flags)
 		free(buf);
 		return;
 	}
-	if ((events & SCTP_EVENT_WRITE) && !done) {
+	while ((events = usrsctp_get_events(sock)) && (events & SCTP_EVENT_WRITE) && !done) {
+	//if ((events & SCTP_EVENT_WRITE) && !done) {
 		struct sctp_sndinfo snd_info;
 		snd_info.snd_sid = 0;
 		snd_info.snd_flags = 0;
@@ -189,7 +193,7 @@ main(int argc, char *argv[])
 	addr.sin6_len = sizeof(struct sockaddr_in6);
 #endif
 	addr.sin6_family = AF_INET6;
-	addr.sin6_port = htons(19);
+	addr.sin6_port = htons(PORT);
 	addr.sin6_addr = in6addr_any;
 	if (usrsctp_bind(listening_socket, (struct sockaddr *)&addr, sizeof(struct sockaddr_in6)) < 0) {
 		perror("usrsctp_bind");
