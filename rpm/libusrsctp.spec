@@ -70,6 +70,7 @@ make install DESTDIR=%{buildroot}
 /usr/lib/libusrsctp/http_client
 /usr/lib/libusrsctp/rtcweb
 /usr/lib/libusrsctp/test_libmgmt
+/usr/lib/libusrsctp/test_timer
 /usr/lib/libusrsctp/tsctp
 /usr/lib/libusrsctp/http_client_upcall
 
