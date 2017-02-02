@@ -131,22 +131,22 @@ find_package(Threads)
 # PROGRAMS
 #################################################
 
-set(CHECK_PROGRAMS
-    client.c
-    datachan_serv.c
-    daytime_server.c
-    discard_server.c
-    echo_server.c
-    ekr_client.c
-    ekr_loop.c
-    ekr_loop_offload.c
-    ekr_peer.c
-    ekr_server.c
-    http_client.c
-    rtcweb.c
-    test_libmgmt.c
-    test_timer.c
-    tsctp.c
+SET (CHECK_PROGRAMS
+	client.c
+	datachan_serv.c
+	daytime_server.c
+	discard_server.c
+	echo_server.c
+	ekr_client.c
+	ekr_loop.c
+	ekr_peer.c
+	ekr_server.c
+	http_client.c
+	rtcweb.c
+	test_libmgmt.c
+	test_timer.c
+	tsctp.c
+	http_client_upcall.c
 )
 
 # SETTINGS FOR UNIX COMPILER
@@ -183,6 +183,10 @@ foreach (SOURCE_FILE ${CHECK_PROGRAMS})
         ${LINK_STATIC}
         ${CMAKE_THREAD_LIBS_INIT}
     )
+
+    install(TARGETS ${SOURCE_FILE_WE}
+            RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}/libusrsctp
+            BUNDLE DESTINATION  ${CMAKE_INSTALL_LIBDIR}/libusrsctp)
 
     add_test(${SOURCE_FILE_WE} ${SOURCE_FILE_WE})
 endforeach ()

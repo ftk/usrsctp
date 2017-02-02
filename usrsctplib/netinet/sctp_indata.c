@@ -1584,7 +1584,7 @@ sctp_process_a_data_chunk(struct sctp_tcb *stcb, struct sctp_association *asoc,
 {
 	/* Process a data chunk */
 	/* struct sctp_tmit_chunk *chk; */
-	struct sctp_tmit_chunk *chk;
+	struct sctp_tmit_chunk *chk = NULL;
 	uint32_t tsn, fsn, gap, mid;
 	struct mbuf *dmbuf;
 	int the_len;
