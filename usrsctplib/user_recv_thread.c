@@ -2572,6 +2572,13 @@ recv_thread_destroy(void)
 		close(SCTP_BASE_VAR(userspace_udpsctp));
 #endif
 	}
+	if (SCTP_BASE_VAR(userspace_icmp) != -1) {
+#if defined(__Userspace_os_Windows)
+		closesocket(SCTP_BASE_VAR(userspace_icmp));
+#else
+		close(SCTP_BASE_VAR(userspace_icmp));
+#endif
+	}
 #endif
 #if defined(INET6)
 	if (SCTP_BASE_VAR(userspace_rawsctp6) != -1) {
@@ -2586,6 +2593,13 @@ recv_thread_destroy(void)
 		closesocket(SCTP_BASE_VAR(userspace_udpsctp6));
 #else
 		close(SCTP_BASE_VAR(userspace_udpsctp6));
+#endif
+    }
+	if (SCTP_BASE_VAR(userspace_icmp6) != -1) {
+#if defined(__Userspace_os_Windows)
+		closesocket(SCTP_BASE_VAR(userspace_icmp6));
+#else
+		close(SCTP_BASE_VAR(userspace_icmp6));
 #endif
 	}
 #endif
