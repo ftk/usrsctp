@@ -132,7 +132,9 @@ sctp_init(void)
 	SCTP_BASE_VAR(first_time) = 0;
 	SCTP_BASE_VAR(sctp_pcb_initialized) = 0;
 #if defined(__Userspace__)
+#if !defined(__Userspace_os_Windows) && (defined(INET) || defined(INET6))
 	SCTP_BASE_VAR(userspace_route) = -1;
+#endif
 #if !defined(THREAD_SUPPORT)
 	SCTP_BASE_VAR(recvmbuf4) = malloc(sizeof(struct mbuf *) * MAXLEN_MBUF_CHAIN);
 	SCTP_BASE_VAR(to_fill4) = MAXLEN_MBUF_CHAIN;
