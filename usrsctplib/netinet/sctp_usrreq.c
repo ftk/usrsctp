@@ -75,8 +75,7 @@ extern const struct sctp_ss_functions sctp_ss_functions[];
 void
 #if defined(__Userspace__)
 sctp_init(uint16_t port,
-          int (*conn_output)(void *addr, void *buffer, size_t length, uint8_t tos, uint8_t set_df),
-          void (*debug_printf)(const char *format, ...))
+          int (*conn_output)(void *addr, void *buffer, size_t length, uint8_t tos, uint8_t set_df))
 #elif defined(__APPLE__) && (!defined(APPLE_LEOPARD) && !defined(APPLE_SNOWLEOPARD) &&!defined(APPLE_LION) && !defined(APPLE_MOUNTAINLION))
 sctp_init(struct protosw *pp SCTP_UNUSED, struct domain *dp SCTP_UNUSED)
 #else
@@ -164,7 +163,6 @@ sctp_init(void)
 #endif
 	SCTP_BASE_VAR(timer_thread_should_exit) = 0;
 	SCTP_BASE_VAR(conn_output) = conn_output;
-	SCTP_BASE_VAR(debug_printf) = debug_printf;
 	SCTP_BASE_VAR(crc32c_offloaded) = 0;
 #endif
 	sctp_pcb_init();

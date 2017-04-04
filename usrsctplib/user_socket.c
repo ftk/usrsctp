@@ -82,6 +82,7 @@ usrsctp_init(uint16_t port,
              int (*conn_output)(void *addr, void *buffer, size_t length, uint8_t tos, uint8_t set_df),
              void (*debug_printf)(const char *format, ...))
 {
+	SCTP_BASE_VAR(debug_printf) = debug_printf;
 #if defined(__Userspace_os_Windows)
 #if defined(INET) || defined(INET6)
 	WSADATA wsaData;
@@ -104,7 +105,7 @@ usrsctp_init(uint16_t port,
 	pthread_mutexattr_destroy(&mutex_attr);
 	pthread_cond_init(&accept_cond, NULL);
 #endif
-	sctp_init(port, conn_output, debug_printf);
+	sctp_init(port, conn_output);
 }
 
 
