@@ -264,12 +264,14 @@ sctp_finish(void)
 #endif
 	}
 #endif
+#if defined(THREAD_SUPPORT)
 	SCTP_BASE_VAR(timer_thread_should_exit) = 1;
 #if defined(__Userspace_os_Windows)
 	WaitForSingleObject(SCTP_BASE_VAR(timer_thread), INFINITE);
 	CloseHandle(SCTP_BASE_VAR(timer_thread));
 #else
 	pthread_join(SCTP_BASE_VAR(timer_thread), NULL);
+#endif
 #endif
 #endif
 	sctp_pcb_finish();
