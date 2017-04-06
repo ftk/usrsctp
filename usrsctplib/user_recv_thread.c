@@ -57,6 +57,9 @@
 #endif
 #endif
 #endif
+#if defined(__Userspace_os_Linux)
+#define __FAVOR_BSD    /* (on Ubuntu at least) enables UDP header field names like BSD in RFC 768 */
+#endif
 #if defined(__Userspace__)
 #ifdef INET6
 #include <netinet6/sctp6_var.h>
