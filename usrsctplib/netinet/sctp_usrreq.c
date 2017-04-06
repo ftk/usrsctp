@@ -145,11 +145,9 @@ sctp_init(void)
 	SCTP_BASE_VAR(icmp_to_fill4) = MAXLEN_MBUF_CHAIN;
 	SCTP_BASE_VAR(icmp_recvmbuf6) = malloc(sizeof(struct mbuf *) * MAXLEN_MBUF_CHAIN);
 	SCTP_BASE_VAR(icmp_to_fill6) = MAXLEN_MBUF_CHAIN;
-#else
-#if !defined(__Userspace_os_Windows)
-#if defined(INET) || defined(INET6)
-	SCTP_BASE_VAR(userspace_route) = -1;
 #endif
+#if !defined(__Userspace_os_Windows) && (defined(INET) || defined(INET6))
+	SCTP_BASE_VAR(userspace_route) = -1;
 #endif
 #ifdef INET
 	SCTP_BASE_VAR(userspace_rawsctp) = -1;
@@ -160,7 +158,6 @@ sctp_init(void)
 	SCTP_BASE_VAR(userspace_rawsctp6) = -1;
 	SCTP_BASE_VAR(userspace_udpsctp6) = -1;
 	SCTP_BASE_VAR(userspace_icmp6) = -1;
-#endif
 #endif
 	SCTP_BASE_VAR(timer_thread_should_exit) = 0;
 	SCTP_BASE_VAR(conn_output) = conn_output;
@@ -267,12 +264,14 @@ sctp_finish(void)
 #endif
 	}
 #endif
+#if defined(THREAD_SUPPORT)
 	SCTP_BASE_VAR(timer_thread_should_exit) = 1;
 #if defined(__Userspace_os_Windows)
 	WaitForSingleObject(SCTP_BASE_VAR(timer_thread), INFINITE);
 	CloseHandle(SCTP_BASE_VAR(timer_thread));
 #else
 	pthread_join(SCTP_BASE_VAR(timer_thread), NULL);
+#endif
 #endif
 #endif
 	sctp_pcb_finish();
