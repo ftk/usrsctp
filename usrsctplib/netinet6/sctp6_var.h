@@ -1,4 +1,6 @@
 /*-
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
  * Copyright (c) 2001-2007, by Cisco Systems, Inc. All rights reserved.
  * Copyright (c) 2008-2012, by Randall Stewart. All rights reserved.
  * Copyright (c) 2008-2012, by Michael Tuexen. All rights reserved.
@@ -32,13 +34,13 @@
 
 #ifdef __FreeBSD__
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: head/sys/netinet6/sctp6_var.h 309607 2016-12-06 10:21:25Z tuexen $");
+__FBSDID("$FreeBSD: head/sys/netinet6/sctp6_var.h 317457 2017-04-26 19:26:40Z tuexen $");
 #endif
 
 #ifndef _NETINET6_SCTP6_VAR_H_
 #define _NETINET6_SCTP6_VAR_H_
 
-#if (defined(__Userspace_os_Darwin) || defined(__Userspace_os_NetBSD) || defined(__Userspace_os_Linux))
+#if (defined(__Userspace_os_Darwin) || defined(__Userspace_os_NetBSD) || defined(__Userspace_os_Linux) ||defined(__Userspace_os_Windows))
 struct ip6ctlparam {
 	struct mbuf *ip6c_m;            /* start of mbuf chain */
 	struct icmp6_hdr *ip6c_icmp6;   /* icmp6 header of target packet */
@@ -109,6 +111,6 @@ extern void in6_sin6_2_sin(struct sockaddr_in *, struct sockaddr_in6 *);
 extern void in6_sin6_2_sin_in_sock(struct sockaddr *);
 #endif
 void sctp6_notify(struct sctp_inpcb *, struct sctp_tcb *, struct sctp_nets *,
-                  uint8_t, uint8_t, uint16_t);
+                  uint8_t, uint8_t, uint32_t);
 #endif
 #endif

@@ -719,9 +719,13 @@ recv_icmp6(WSABUF *recv_iovec, int len, struct mbuf **recvmbuf6)
 #else
 	int nResult, m_ErrorCode;
 	DWORD flags;
-	struct sockaddr_in6 from;
-	WSACMSGHDR *cmsgptr;
-	int fromlen;
+        struct sockaddr_in6 from;
+        int fromlen;
+        GUID WSARecvMsg_GUID = WSAID_WSARECVMSG;
+        LPFN_WSARECVMSG WSARecvMsg;
+        WSACMSGHDR *cmsgptr;
+        WSAMSG msg;
+        char ControlBuffer[1024];
 #endif
 	struct mbuf *m;
 	int filled = 0;
@@ -1016,8 +1020,12 @@ recv_raw6(WSABUF *recv_iovec, int len, struct mbuf **recvmbuf6)
 	int nResult, m_ErrorCode;
 	DWORD flags;
 	struct sockaddr_in6 from;
+        int fromlen;
+	GUID WSARecvMsg_GUID = WSAID_WSARECVMSG;
+        LPFN_WSARECVMSG WSARecvMsg;
 	WSACMSGHDR *cmsgptr;
-	int fromlen;
+        WSAMSG msg;
+	char ControlBuffer[1024];
 #endif
 	int filled = 0;
 	int i, n, ncounter = 0;
