@@ -352,12 +352,12 @@ struct sctp_base_info {
 	struct iovec icmp_recv_iovec4[MAXLEN_MBUF_CHAIN];
 	struct iovec icmp_recv_iovec6[MAXLEN_MBUF_CHAIN];
 #else
-    WSABUF *rcv_iovec4;
-    WSABUF *rcv_iovec6;
-    WSABUF *udp_rcv_iovec4;
-    WSABUF *udp_rcv_iovec6;
-    WSABUF *icmp_rcv_iovec4;
-    WSABUF *icmp_rcv_iovec6;
+    WSABUF *recv_iovec4;
+    WSABUF *recv_iovec6;
+    WSABUF *udp_recv_iovec4;
+    WSABUF *udp_recv_iovec6;
+    WSABUF *icmp_recv_iovec4;
+    WSABUF *icmp_recv_iovec6;
 #endif
 #endif
 #endif

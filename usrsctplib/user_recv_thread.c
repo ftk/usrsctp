@@ -634,13 +634,13 @@ usrsctp_recv_function_sctp4(void)
 			   Have tried both sending and receiving
 			 */
 		SCTP_BASE_VAR(recvmbuf4[i]) = sctp_get_mbuf_for_msg(iovlen, want_header, M_NOWAIT, want_ext, MT_DATA);
-#if !defined(__Userspace_os_Windows)
+//#if !defined(__Userspace_os_Windows)
 		SCTP_BASE_VAR(recv_iovec4[i].iov_base) = (caddr_t)SCTP_BASE_VAR(recvmbuf4[i]->m_data);
 		SCTP_BASE_VAR(recv_iovec4[i].iov_len) = iovlen;
-#else
-		SCTP_BASE_VAR(recv_iovec[i].buf) = (caddr_t)SCTP_BASE_VAR(recvmbuf[i]->m_data);
-		SCTP_BASE_VAR(recv_iovec[i].len) = iovlen;
-#endif
+/* #else */
+/* 		SCTP_BASE_VAR(recv_iovec[i].buf) = (caddr_t)SCTP_BASE_VAR(recvmbuf[i]->m_data); */
+/* 		SCTP_BASE_VAR(recv_iovec[i].len) = iovlen; */
+/* #endif */
 	}
 	SCTP_BASE_VAR(to_fill4) = recv_raw4(SCTP_BASE_VAR(recv_iovec4), MAXLEN_MBUF_CHAIN, SCTP_BASE_VAR(recvmbuf4));
 }
