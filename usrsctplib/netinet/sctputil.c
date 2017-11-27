@@ -36,7 +36,6 @@
 #include <sys/cdefs.h>
 __FBSDID("$FreeBSD: head/sys/netinet/sctputil.c 326163 2017-11-24 12:18:48Z tuexen $");
 #endif
-
 #include <netinet/sctp_os.h>
 #include <netinet/sctp_pcb.h>
 #include <netinet/sctputil.h>
@@ -55,15 +54,15 @@ __FBSDID("$FreeBSD: head/sys/netinet/sctputil.c 326163 2017-11-24 12:18:48Z tuex
 #include <netinet/sctp_auth.h>
 #include <netinet/sctp_asconf.h>
 #include <netinet/sctp_bsd_addr.h>
-
-
-
+#if defined(__Userspace_os_Linux)
+#define __FAVOR_BSD    /* (on Ubuntu at least) enables UDP header field names like BSD in RFC 768 */
+#endif
 #if defined(__Userspace__)
 #include <netinet/sctp_constants.h>
-
-
-
-
+#if !defined(__Userspace_os_Windows)
+#include <netinet/udp.h>
+#include <netinet/icmp6.h>
+#endif
 #endif
 #if defined(__FreeBSD__)
 #if defined(INET6) || defined(INET)
@@ -92,67 +91,6 @@ __FBSDID("$FreeBSD: head/sys/netinet/sctputil.c 326163 2017-11-24 12:18:48Z tuex
 #define KTR_SCTP KTR_SUBSYS
 #endif
 #endif
-
-
-/* #ifdef __FreeBSD__ */
-/* #include <sys/cdefs.h> */
-/* __FBSDID("$FreeBSD: head/sys/netinet/sctputil.c 326163 2017-11-24 12:18:48Z tuexen $"); */
-/* #endif */
-/* #include <netinet/sctp_os.h> */
-/* #include <netinet/sctp_pcb.h> */
-/* #include <netinet/sctputil.h> */
-/* #include <netinet/sctp_var.h> */
-/* #include <netinet/sctp_sysctl.h> */
-/* #ifdef INET6 */
-/* #if defined(__Userspace__) || defined(__FreeBSD__) */
-/* #include <netinet6/sctp6_var.h> */
-/* #endif */
-/* #endif */
-/* #include <netinet/sctp_header.h> */
-/* #include <netinet/sctp_output.h> */
-/* #include <netinet/sctp_uio.h> */
-/* #include <netinet/sctp_timer.h> */
-/* #include <netinet/sctp_indata.h>/\* for sctp_deliver_data() *\/ */
-/* #include <netinet/sctp_auth.h> */
-/* #include <netinet/sctp_asconf.h> */
-/* #include <netinet/sctp_bsd_addr.h> */
-/* #if defined(__Userspace_os_Linux) */
-/* #define __FAVOR_BSD    /\* (on Ubuntu at least) enables UDP header field names like BSD in RFC 768 *\/ */
-/* #endif */
-/* #if defined(__Userspace__) */
-/* #include <netinet/sctp_constants.h> */
-/* #if !defined(__Userspace_os_Windows) || defined(__MINGW32__) */
-/* //#include <netinet/udp.h> */
-/* #include <netinet/icmp6.h> */
-/* #endif */
-/* #endif */
-/* #if defined(__FreeBSD__) */
-/* #if defined(INET6) || defined(INET) */
-/* #include <netinet/tcp_var.h> */
-/* #endif */
-/* #include <netinet/udp.h> */
-/* #include <netinet/udp_var.h> */
-/* #include <sys/proc.h> */
-/* #ifdef INET6 */
-/* #include <netinet/icmp6.h> */
-/* #endif */
-/* #endif */
-
-
-/* #if defined(__APPLE__) */
-/* #define APPLE_FILE_NO 8 */
-/* #endif */
-
-/* #if defined(__Windows__) */
-/* #if !defined(SCTP_LOCAL_TRACE_BUF) */
-/* #include "eventrace_netinet.h" */
-/* #include "sctputil.tmh" /\* this is the file that will be auto generated *\/ */
-/* #endif */
-/* #else */
-/* #ifndef KTR_SCTP */
-/* #define KTR_SCTP KTR_SUBSYS */
-/* #endif */
-/* #endif */
 
 extern const struct sctp_cc_functions sctp_cc_functions[];
 extern const struct sctp_ss_functions sctp_ss_functions[];
