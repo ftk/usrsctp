@@ -486,11 +486,7 @@ main(int argc, char *argv[])
 		perror("usrsctp_connect");
 	}
 	for (;;) {
-#ifdef _WIN32
-		if (gets_s(line, LINE_LENGTH) == NULL) {
-#else
 		if (fgets(line, LINE_LENGTH, stdin) == NULL) {
-#endif
 			if (usrsctp_shutdown(s, SHUT_WR) < 0) {
 				perror("usrsctp_shutdown");
 			}

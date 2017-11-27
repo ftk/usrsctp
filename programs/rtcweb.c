@@ -1426,11 +1426,7 @@ main(int argc, char *argv[])
 	unlock_peer_connection(&peer_connection);
 
 	for (;;) {
-#ifdef _WIN32
-		if (gets_s(line, LINE_LENGTH) == NULL) {
-#else
 		if (fgets(line, LINE_LENGTH, stdin) == NULL) {
-#endif
 			if (usrsctp_shutdown(sock, SHUT_WR) < 0) {
 				perror("usrsctp_shutdown");
 			}
