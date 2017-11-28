@@ -225,6 +225,11 @@ if ("${CMAKE_C_COMPILER_ID}" MATCHES "Clang" OR "${CMAKE_C_COMPILER_ID}" MATCHES
 		set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fsanitize=memory -fno-omit-frame-pointer -g -fsanitize-memory-track-origins")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=memory -fno-omit-frame-pointer -g -fsanitize-memory-track-origins")
 	endif ()
+
+	if (WIN32)
+		set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -D_WIN32_WINNT=0x0601")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x0601")
+	endif ()
 endif ()
 
 # SETTINGS FOR VISUAL STUDIO COMPILER
